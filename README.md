@@ -1,2 +1,4 @@
 # pixart
-bruh
+
+
+Pixel art program.
