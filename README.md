@@ -1,4 +1,4 @@
 # pixart
 
 
-Pixel art program.
+Pixel art program to edit things.
