@@ -6,12 +6,14 @@ Desktop application to create pixel art Images.
 ## TODO
 
 
--	add tooltip
+-	~add toolbar~
 
--	add different tools support
+-	~add different tools support~
 
--	Color picker
+-	~Color picker~
 
--	State management
+-	~State management~
 
--	file saving
+-	~file saving~
+
+-	...

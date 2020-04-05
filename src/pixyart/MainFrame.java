@@ -1,27 +1,27 @@
 package pixyart;
 
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
+import java.awt.event.*;
 import javax.swing.*;
-
-
 import java.awt.*;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame  {
 	private ColorPicker colorPicker;
-	private PixelCanvas canvas;
+	private ToolPanel tools;
+	private JPanel canvasPanel;
+	private JScrollPane canvasContainer;
 	
 	public MainFrame() {
 	    super("Pixy Art"); // temporary name
-	    
+
+
 	    Container mainPane = this.getContentPane();
 	    mainPane.setLayout(new BorderLayout());
-	    setPreferredSize(new Dimension(800, 700));
-
+	    
+	    setPreferredSize(new Dimension(600, 700));
 	    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+	    
 	    // what happens  when the window is closed
 	    addWindowListener(new WindowAdapter() {
 	        @Override
@@ -31,21 +31,36 @@ public class MainFrame extends JFrame  {
 	        	MainFrame.this.dispose();
 	        }
 	    });
-	
-	    canvas = new PixelCanvas(50, 50);
-	    canvas.setScale(20.0F);
-	    canvas.setSelectedTool(new PencilTool());
+	  
 	    
+	    colorPicker = new ColorPicker(Color.BLACK);
+		tools = new ToolPanel();
+        canvasPanel = new JPanel(new GridBagLayout());
+        
+        canvasContainer = new JScrollPane(canvasPanel);
+        new GlobalKeyBinder(this.getRootPane());
 
-	    colorPicker = new ColorPicker(canvas.getPrimaryColor());
-	    colorPicker.setCanvas(canvas);
-	    
-        JPanel canvasPanel = new JPanel();
-        canvasPanel.add(canvas);
-	    mainPane.add(canvasPanel, BorderLayout.CENTER);
-        mainPane.add(colorPicker, BorderLayout.NORTH); 
+        // updating global state
+
+        GlobalStateManager.getInstance().setColorPicker(colorPicker);
+        GlobalStateManager.getInstance().setTools(tools);
+        GlobalStateManager.getInstance().setMainFrame(this);
+        
+
+        mainPane.add(canvasContainer, BorderLayout.CENTER);
+        mainPane.add(colorPicker, BorderLayout.EAST); 
+        mainPane.add(tools, BorderLayout.NORTH);
 	    pack();
 	}
 	
-
+	public JPanel getCanvasPanel()
+	{
+		return this.canvasPanel;
+	}
+	
+	public JScrollPane getCanvasContainer()
+	{
+		return this.canvasContainer;
+	}
+	
 }
