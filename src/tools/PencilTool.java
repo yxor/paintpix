@@ -12,7 +12,7 @@ public class PencilTool extends Tool {
 	
     public void mousePressed(MouseEvent e)
     {
-    	PixelCanvas canvas = GlobalStateManager.getInstance().getCanvas();
+    	PixelCanvas canvas = (PixelCanvas) e.getSource();
     	Point coords = e.getPoint();
     	// check if the point is already painted, if its painted do not do anything
     	Color c = ((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == MouseEvent.BUTTON1_DOWN_MASK)? canvas.getPrimaryColor(): canvas.getSecondaryColor();
@@ -30,7 +30,7 @@ public class PencilTool extends Tool {
 
     public void mouseDragged(MouseEvent e)
     {
-    	PixelCanvas canvas = GlobalStateManager.getInstance().getCanvas();
+    	PixelCanvas canvas = (PixelCanvas) e.getSource();
     	Point coords = e.getPoint();
     	// check if the point is already painted, if its painted dont do anything
     	if(visited.contains(canvas.getScaledCoord(coords)))
@@ -45,7 +45,7 @@ public class PencilTool extends Tool {
 
     public void mouseReleased(MouseEvent e)
     {
-    	PixelCanvas canvas = GlobalStateManager.getInstance().getCanvas();
+    	PixelCanvas canvas = (PixelCanvas) e.getSource();
     	visited.clear();
     	canvas.repaint();
     }

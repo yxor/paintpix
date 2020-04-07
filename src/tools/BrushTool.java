@@ -5,7 +5,6 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.HashSet;
 
-import pixyart.GlobalStateManager;
 import pixyart.PixelCanvas;
 
 public class BrushTool extends Tool{
@@ -20,9 +19,13 @@ public class BrushTool extends Tool{
 	
     public void mousePressed(MouseEvent e)
     {
-    	PixelCanvas canvas = GlobalStateManager.getInstance().getCanvas();
+    	PixelCanvas canvas = (PixelCanvas) e.getSource();
     	Point coords = e.getPoint();
+    	
     	// check if the point is already painted, if its painted do not do anything
+    	if(visited.isEmpty())
+    		canvas.changeHappened();
+    	
     	if(visited.contains(canvas.getScaledCoord(coords)))
     	{
     		return;
@@ -36,7 +39,7 @@ public class BrushTool extends Tool{
 
     public void mouseDragged(MouseEvent e)
     {
-    	PixelCanvas canvas = GlobalStateManager.getInstance().getCanvas();
+    	PixelCanvas canvas = (PixelCanvas) e.getSource();
     	Point coords = e.getPoint();
     	// check if the point is already painted, if its painted do not do anything
     	if(visited.contains(canvas.getScaledCoord(coords)))
@@ -53,8 +56,7 @@ public class BrushTool extends Tool{
 
     public void mouseReleased(MouseEvent e)
     {
-    	PixelCanvas canvas = GlobalStateManager.getInstance().getCanvas();
-    	canvas.changeHappened();
+    	PixelCanvas canvas = (PixelCanvas) e.getSource();
     	visited.clear();
     	canvas.repaint();
 
