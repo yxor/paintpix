@@ -32,19 +32,22 @@ public class MainFrame extends JFrame  {
 	        }
 	    });
 	  
-	    
+	    // creating the components
 	    colorPicker = new ColorPicker(Color.BLACK);
 		tools = new ToolPanel();
+		
+		
         canvasPanel = new JPanel(new GridBagLayout());
-        
         canvasContainer = new JScrollPane(canvasPanel);
-        new GlobalKeyBinder(this.getRootPane());
+        
+        GlobalKeyBinder globalKeyBinder = new GlobalKeyBinder(this.getRootPane());
 
-        // updating global state
+        // creating Main controller
+        MainController controller = new MainController(this);
+        globalKeyBinder.setController(controller);
+        
 
-        GlobalStateManager.getInstance().setColorPicker(colorPicker);
-        GlobalStateManager.getInstance().setTools(tools);
-        GlobalStateManager.getInstance().setMainFrame(this);
+        
         
 
         mainPane.add(canvasContainer, BorderLayout.CENTER);
@@ -52,15 +55,23 @@ public class MainFrame extends JFrame  {
         mainPane.add(tools, BorderLayout.NORTH);
 	    pack();
 	}
-	
-	public JPanel getCanvasPanel()
-	{
-		return this.canvasPanel;
+
+	public ColorPicker getColorPicker() {
+		return colorPicker;
+	}
+
+	public ToolPanel getTools() {
+		return tools;
+	}
+
+	public JPanel getCanvasPanel() {
+		return canvasPanel;
+	}
+
+	public JScrollPane getCanvasContainer() {
+		return canvasContainer;
 	}
 	
-	public JScrollPane getCanvasContainer()
-	{
-		return this.canvasContainer;
-	}
+
 	
 }

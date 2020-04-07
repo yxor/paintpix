@@ -7,8 +7,9 @@ import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class GlobalKeyBinder {
+	private MainController controller;
 	
-	
+
 	public GlobalKeyBinder(JRootPane root) {
 		KeyStroke undoKey = KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.CTRL_MASK);
 		KeyStroke redoKey = KeyStroke.getKeyStroke(KeyEvent.VK_Y, Event.CTRL_MASK);
@@ -17,16 +18,22 @@ public class GlobalKeyBinder {
 		root.getActionMap().put("undo", new AbstractAction() {			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GlobalStateManager.getInstance().getCanvas().undo();
+				GlobalKeyBinder.this.controller.getCanvas().undo();
 			}
 		});
 		root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(redoKey, "redo");
 		root.getActionMap().put("redo", new AbstractAction() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GlobalStateManager.getInstance().getCanvas().redo();
+				GlobalKeyBinder.this.controller.getCanvas().redo();
 			}
 		});
 		
 	}
+	
+	public void setController(MainController controller)
+	{
+		this.controller = controller;
+	}
+	
 }

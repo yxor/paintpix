@@ -9,13 +9,16 @@ import javax.swing.event.ChangeListener;
 
 @SuppressWarnings("serial")
 public class ColorPicker extends JColorChooser{
+	private MainController controller;
+	
 	private class Listener implements ChangeListener {
 
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			if (GlobalStateManager.getInstance().getCanvas() == null)
+			PixelCanvas canvas = ColorPicker.this.controller.getCanvas();
+			if (canvas == null)
 				return;
-			GlobalStateManager.getInstance().getCanvas().setPrimaryColor(ColorPicker.this.getColor());
+			canvas.setPrimaryColor(ColorPicker.this.getColor());
 		}
 		
 	}
@@ -42,5 +45,11 @@ public class ColorPicker extends JColorChooser{
 	    this.setBorder(BorderFactory.createTitledBorder(
             "Color Picker")); 
 	}
+	
+	public void setController(MainController controller)
+	{
+		this.controller = controller;
+	}
+	
 	
 }

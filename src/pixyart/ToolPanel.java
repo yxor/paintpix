@@ -2,13 +2,14 @@ package pixyart;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 import tools.*;
 
 @SuppressWarnings("serial")
 public class ToolPanel extends JToolBar {
+	private MainController controller;
+	
 	private BrushTool brush;
 	private BucketTool bucket;
 	private EyeDropperTool eyeDropper;
@@ -29,7 +30,8 @@ public class ToolPanel extends JToolBar {
 		this.pencil = new PencilTool();
 		this.eraser = new EraserTool();
 		
-		String[] buttonLabels = { "Pencil", "Brush", "Bucket", "EyeDropper", "Save", "Save As", "Open", "Eraser" };
+		
+		String[] buttonLabels = {"Open", "Save", "Save As", "Pencil", "Brush", "Eraser", "EyeDropper", "Bucket"};
 		
 		JButton[] buttons = new JButton[buttonLabels.length];
 		for (int i = 0; i < buttons.length; i++) {
@@ -43,96 +45,49 @@ public class ToolPanel extends JToolBar {
 	}
 
 	private class ButtonListener implements ActionListener {
-		GlobalStateManager state = GlobalStateManager.getInstance();
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			switch(e.getActionCommand()) {
+			
 			case "Open":
-				BufferedImage image = ImageFileManager.open();
-				newCanvas(image);
-				state.getCanvas().setSavePath(ImageFileManager.latestPath);
+				controller.openCanvasFromFileSystem();
 				break;
-
-			case "Pencil":
-				if(state.getCanvas() == null) return;
-				state.getCanvas().setSelectedTool(pencil);
-				break;
-			case "Bucket":
-				if(state.getCanvas() == null) return;
-				state.getCanvas().setSelectedTool(bucket);
-				break;
-			case "Brush":
-				if(state.getCanvas() == null) return;
-				state.getCanvas().setSelectedTool(brush);
-				break;
-			
-			case "EyeDropper":
-				if(state.getCanvas() == null) return;
-				state.getCanvas().setSelectedTool(eyeDropper);
-				break;
-			
+				
 			case "Save":
-				if(state.getCanvas() == null) return;
-
-				String path = state.getCanvas().getSavePath();
-				if(path == null)
-				{
-					path = ImageFileManager.save(state.getCanvas().getImage());
-					state.getCanvas().setSavePath(path);
-				}else {
-					ImageFileManager.save(state.getCanvas().getImage(), path);
-				}
+				controller.saveCanvas();
 				break;
+				
 			case "Save As":
-				if(state.getCanvas() == null) return;
-				path = ImageFileManager.save(state.getCanvas().getImage());
-				state.getCanvas().setSavePath(path);
+				controller.saveCanvasAs();
 				break;
+				
+			case "Pencil":
+				controller.setCanvasTool(pencil);
+				break;
+				
+			case "Bucket":
+				controller.setCanvasTool(bucket);
+				break;
+				
+			case "Brush":
+				controller.setCanvasTool(brush);
+				break;
+				
+			case "EyeDropper":
+				controller.setCanvasTool(eyeDropper);
+				break;
+				
 			case "Eraser":
-				if(state.getCanvas() == null) return;
-				state.getCanvas().setSelectedTool(eraser);
+				controller.setCanvasTool(eraser);
 				break;
-			
 			}
-			
 		}
 	}
 	
 
-	public void newCanvas(int width, int height)
+	public void setController(MainController controller)
 	{
-		GlobalStateManager state = GlobalStateManager.getInstance();
-		if(state.getCanvas() != null)
-		{
-			state.getMainFrame().getCanvasPanel().remove(state.getCanvas());
-			state.getMainFrame().revalidate();
-		}
-		state.setCanvas(new PixelCanvas(width, height));
-		resetTools();
+		this.controller = controller;
 	}
-	
-	public void newCanvas(BufferedImage image)
-	{
-		GlobalStateManager state = GlobalStateManager.getInstance();
-		if(state.getCanvas() != null)
-		{
-			state.getMainFrame().getCanvasPanel().remove(state.getCanvas());
-			state.getMainFrame().revalidate();
-		}
-		state.setCanvas(new PixelCanvas(image));
-		resetTools();
-	}
-	
-	private void resetTools()
-	{
-		GlobalStateManager state = GlobalStateManager.getInstance();
-		state.getCanvas().setScale(10.0F);
-		state.getCanvas().setSelectedTool(pencil);
-
-		state.getMainFrame().getCanvasPanel().add(state.getCanvas());
-		state.getMainFrame().getCanvasContainer().repaint();
-		state.getMainFrame().revalidate();
-	}
-	
 	
 }

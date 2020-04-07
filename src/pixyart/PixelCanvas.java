@@ -20,6 +20,7 @@ public class PixelCanvas extends JComponent{
 	
 	private Tool selectedTool;
 	private CanvasUndoManager undoManager = new CanvasUndoManager();
+	private MainController controller;
 	private MouseAdapter mouseAdapter = new MouseAdapter () {
 		
     	public void mouseWheelMoved(MouseWheelEvent e)
@@ -124,7 +125,7 @@ public class PixelCanvas extends JComponent{
 	
 	public void zoom(double scale, Point p)
 	{	
-		JPanel canvasPanel = GlobalStateManager.getInstance().getMainFrame().getCanvasPanel();
+		JPanel canvasPanel = this.controller.getCanvasPanel();
 
 		double oldScale = this.scaleFactor;
 		this.scaleFactor *= (scale < 0) ? 1.1f : 0.9f;
@@ -241,7 +242,7 @@ public class PixelCanvas extends JComponent{
 		int rgb = this.pixels.getRGB(getScaledCoord(x), getScaledCoord(y));
 		Color c = new Color(rgb, true);
 		
-		GlobalStateManager.getInstance().getColorPicker().setColor(c);
+		this.controller.getColorPicker().setColor(c);
 		if(primaryColor)
 			this.primaryColor = c;
 		else
@@ -334,6 +335,11 @@ public class PixelCanvas extends JComponent{
 
 	public void setSavePath(String savePath) {
 		this.savePath = savePath;
+	}
+	
+	public void setController(MainController controller)
+	{
+		this.controller = controller;
 	}
 
 	
