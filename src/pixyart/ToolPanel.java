@@ -14,6 +14,8 @@ public class ToolPanel extends JToolBar {
 	private BucketTool bucket;
 	private EyeDropperTool eyeDropper;
 	private PencilTool pencil;
+	private EraserTool eraser;
+
 	
 	
 	
@@ -26,8 +28,9 @@ public class ToolPanel extends JToolBar {
 		this.bucket = new BucketTool();
 		this.eyeDropper = new EyeDropperTool();
 		this.pencil = new PencilTool();
+		this.eraser = new EraserTool();
 		
-		String[] buttonLabels = { "Pencil", "Brush", "Bucket", "EyeDropper", "Save", "Save As", "Open" };
+		String[] buttonLabels = { "Pencil", "Brush", "Bucket", "EyeDropper", "Save", "Save As", "Open", "Eraser" };
 		
 		JButton[] buttons = new JButton[buttonLabels.length];
 		for (int i = 0; i < buttons.length; i++) {
@@ -86,7 +89,10 @@ public class ToolPanel extends JToolBar {
 				path = ImageFileManager.save(state.getCanvas().getImage());
 				state.getCanvas().setSavePath(path);
 				break;
-
+			case "Eraser":
+				if(state.getCanvas() == null) return;
+				state.getCanvas().setSelectedTool(eraser);
+				break;
 			
 			}
 			

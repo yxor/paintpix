@@ -75,12 +75,12 @@ public class PixelCanvas extends JComponent{
 
         addMouseWheelListener(mouseAdapter);
 	}
-	
-	  @Override
-      public Dimension getPreferredSize() {
-          return new Dimension((int)Math.round(pixels.getWidth() * scaleFactor + 2), 
-        		  (int)Math.round(pixels.getHeight() * scaleFactor + 2));
-      }
+
+	@Override
+	public Dimension getPreferredSize() {
+	    return new Dimension((int)Math.round(pixels.getWidth() * scaleFactor + 2), 
+	  		  (int)Math.round(pixels.getHeight() * scaleFactor + 2));
+	}
 
 
 	@Override
@@ -156,6 +156,20 @@ public class PixelCanvas extends JComponent{
         
 		g2d.setColor(c);
         g2d.setComposite(comp);
+        g2d.fillOval(realX, realY, size, size);
+
+		g2d.dispose();
+	}
+	
+	public void erase(int x, int y, int size)
+	{
+		int realX = this.getScaledCoord(x, size);
+		int realY = this.getScaledCoord(y, size);
+		
+		Graphics2D g2d = (Graphics2D) this.pixels.getGraphics();
+        
+		g2d.setColor(new Color(0, 0, 0, 0));
+        g2d.setComposite(AlphaComposite.Src);
         g2d.fillOval(realX, realY, size, size);
 
 		g2d.dispose();
