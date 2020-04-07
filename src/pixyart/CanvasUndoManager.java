@@ -2,54 +2,46 @@ package pixyart;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
-import java.util.ArrayDeque;
+import java.util.concurrent.LinkedBlockingDeque;
 
 public class CanvasUndoManager {
-	private ArrayDeque<BufferedImage> history;
-	private ArrayDeque<BufferedImage> undoed;
+	private LinkedBlockingDeque<Raster> history;
+	private LinkedBlockingDeque<Raster> undoed;
 	
 	/**
 	 * Constructor
 	 */
 	public CanvasUndoManager() {
-		this.history = new ArrayDeque<BufferedImage>();
-		this.undoed = new ArrayDeque<BufferedImage>();
+		this.history = new LinkedBlockingDeque<Raster>();
+		this.undoed = new LinkedBlockingDeque<Raster>();
 	}
-	/**
-	 * Constructor
-	 * 
-	 * @param image Image to add to the history
-	 */
-	public CanvasUndoManager(BufferedImage image)
-	{
-		this();
-		this.history.addFirst(deepCopy(image));
-	}
-	
-	public synchronized void changeHappened(BufferedImage image)
-	{
-		this.history.addFirst(deepCopy(image));
-		//this.undoed.clear();
 
+	public void changeHappened(Raster image)
+	{
+		this.history.addFirst(image);
+		this.undoed.clear();
 	}
 	
-	public synchronized BufferedImage undo()
+	public Raster undo(Raster redoImage)
 	{
 		if(this.history.isEmpty())
 			return null;
-		BufferedImage lastImage = this.history.poll();
-		//this.undoed.addFirst(deepCopy(lastImage));
-		return deepCopy(lastImage);
+		
+		Raster lastImage = this.history.poll();
+		this.undoed.addFirst(redoImage);
+		return lastImage;
 	}
 	
-	public synchronized BufferedImage redo()
+	public synchronized Raster redo(Raster undoImage)
 	{
 		if(this.undoed.isEmpty())
 			return null;
-		BufferedImage lastImage = this.undoed.poll();
-		this.history.addFirst(deepCopy(lastImage));
-		return deepCopy(lastImage);
+		
+		Raster lastImage = this.undoed.poll();
+		this.history.addFirst(undoImage);
+		return lastImage;
 	}
 	
 	

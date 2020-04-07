@@ -1,6 +1,5 @@
 package pixyart;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -46,7 +45,7 @@ public class ToolPanel extends JToolBar {
 	private class ButtonListener implements ActionListener {
 		GlobalStateManager state = GlobalStateManager.getInstance();
 		@Override
-		public synchronized void  actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent e) {
 			switch(e.getActionCommand()) {
 			case "Open":
 				BufferedImage image = ImageFileManager.open();
@@ -129,7 +128,7 @@ public class ToolPanel extends JToolBar {
 		GlobalStateManager state = GlobalStateManager.getInstance();
 		state.getCanvas().setScale(10.0F);
 		state.getCanvas().setSelectedTool(pencil);
-	    	    
+
 		state.getMainFrame().getCanvasPanel().add(state.getCanvas());
 		state.getMainFrame().getCanvasContainer().repaint();
 		state.getMainFrame().revalidate();

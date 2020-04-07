@@ -18,7 +18,7 @@ Desktop application to create pixel art Images.
 
 -	Add tool icons
 
--	Fix UndoManager
+-	~Fix UndoManager~
 
 -	Add primaryColor and SecondaryColor pickers
 

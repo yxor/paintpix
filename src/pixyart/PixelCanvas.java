@@ -2,12 +2,9 @@ package pixyart;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
+import java.awt.image.*;
 import java.util.*;
-
 import javax.swing.*;
-import javax.swing.undo.UndoManager;
 
 import tools.Tool;
 
@@ -22,7 +19,7 @@ public class PixelCanvas extends JComponent{
 	private Color secondaryColor;
 	
 	private Tool selectedTool;
-	private CanvasUndoManager undoManager;
+	private CanvasUndoManager undoManager = new CanvasUndoManager();
 	private MouseAdapter mouseAdapter = new MouseAdapter () {
 		
     	public void mouseWheelMoved(MouseWheelEvent e)
@@ -51,7 +48,6 @@ public class PixelCanvas extends JComponent{
 		this.secondaryColor = new Color(255, 255, 255, 0);
         this.setPreferredSize(new Dimension(width+2, height+2));
 
-		this.undoManager = new CanvasUndoManager(this.pixels);
 		// zooming in and out support TODO improve this
 		
         addMouseWheelListener(mouseAdapter);
@@ -63,7 +59,7 @@ public class PixelCanvas extends JComponent{
 	 * @param image Canvas width.
 	 */
 	public PixelCanvas(BufferedImage image) {
-		this.pixels = image;;
+		this.pixels = image;
 
 		this.scaleFactor = 1.0F;
 		this.width = image.getWidth() + 2;
@@ -71,7 +67,6 @@ public class PixelCanvas extends JComponent{
 		
 		this.primaryColor = new Color(0, 0, 0, 255);
 		this.secondaryColor = new Color(255, 255, 255, 255);
-		this.undoManager = new CanvasUndoManager(this.pixels);
 
         addMouseWheelListener(mouseAdapter);
 	}
@@ -115,7 +110,7 @@ public class PixelCanvas extends JComponent{
 		int realX = this.getScaledCoord(x);
 		int realY = this.getScaledCoord(y);
 		
-		Graphics2D g2d = (Graphics2D) this.pixels.getGraphics();
+		Graphics2D g2d = this.pixels.createGraphics();
 		
 		
         Composite comp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) c.getAlpha() / 255f);
@@ -150,7 +145,7 @@ public class PixelCanvas extends JComponent{
 		int realX = this.getScaledCoord(x, size);
 		int realY = this.getScaledCoord(y, size);
 		
-		Graphics2D g2d = (Graphics2D) this.pixels.getGraphics();
+		Graphics2D g2d = this.pixels.createGraphics();
 		
         Composite comp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) c.getAlpha() / 255f);
         
@@ -166,7 +161,7 @@ public class PixelCanvas extends JComponent{
 		int realX = this.getScaledCoord(x, size);
 		int realY = this.getScaledCoord(y, size);
 		
-		Graphics2D g2d = (Graphics2D) this.pixels.getGraphics();
+		Graphics2D g2d = this.pixels.createGraphics();
         
 		g2d.setColor(new Color(0, 0, 0, 0));
         g2d.setComposite(AlphaComposite.Src);
@@ -214,27 +209,30 @@ public class PixelCanvas extends JComponent{
 		}
 	}
 	
-	public synchronized void changeHappened()
+	
+	public void changeHappened()
 	{
-		this.undoManager.changeHappened(this.pixels);
+		this.undoManager.changeHappened(this.pixels.getData());
 	}
 	
-	public synchronized void undo()
+	
+	public void undo()
 	{
-		
-		BufferedImage image = this.undoManager.undo();
+		Raster image = this.undoManager.undo(this.pixels.getData());
 		if(image == null)
 			return;
-		this.pixels = image;
+		
+		this.pixels.setData(image);
 		repaint();
 	}
 	
-	public synchronized void redo()
+	public void redo()
 	{
-		BufferedImage image = this.undoManager.redo();
+		Raster image = this.undoManager.redo(this.pixels.getData());
 		if(image == null)
 			return;
-		this.pixels = image;
+		
+		this.pixels.setData(image);
 		repaint();
 	}
 	
