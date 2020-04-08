@@ -47,7 +47,9 @@ public class MainFrame extends JFrame  {
         globalKeyBinder.setController(controller);
         
 
-        
+        // creating the menu bar
+        MainMenuBar menuBar = new MainMenuBar(controller);
+        this.setJMenuBar(menuBar);
         
 
         mainPane.add(canvasContainer, BorderLayout.CENTER);
