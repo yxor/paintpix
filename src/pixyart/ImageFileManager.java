@@ -1,5 +1,8 @@
 package pixyart;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -88,7 +91,7 @@ public final class ImageFileManager {
 		return null;
 	}
 	
-	private static File getSelectedFileWithExtension(JFileChooser c) 
+	public static File getSelectedFileWithExtension(JFileChooser c) 
 	{
 	    File file = c.getSelectedFile();
 	    if (c.getFileFilter() instanceof FileNameExtensionFilter) {
@@ -104,4 +107,20 @@ public final class ImageFileManager {
 	    }
 	    return file;
 	}
+	
+	public static BufferedImage resize(BufferedImage original, int newWidth, int newHeight)
+	{
+		BufferedImage resized = new BufferedImage(newWidth, newHeight, original.getType());
+		Graphics2D g2d = resized.createGraphics();
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.drawImage(original, 0, 0, newWidth, newHeight, 0, 0, original.getWidth(),
+		    original.getHeight(), null);
+		g2d.dispose();
+		
+		return resized;
+	}
+
 }

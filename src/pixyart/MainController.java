@@ -1,5 +1,6 @@
 package pixyart;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -80,15 +81,15 @@ public class MainController {
 	
 	public void openCanvasFromFileSystem()
 	{
+		
 		BufferedImage image = ImageFileManager.open();
 		this.createCanvas(image);
 		this.canvas.setSavePath(ImageFileManager.latestPath);
+		this.canvas.setSaveHeight(this.canvas.getImage().getHeight());
+		this.canvas.setSaveWidth(this.canvas.getImage().getWidth());
+
 	}
 	
-	public void openNewCanvas()
-	{
-		
-	}
 	
 	public void saveCanvas()
 	{
@@ -97,10 +98,11 @@ public class MainController {
 		String path = this.canvas.getSavePath();
 		if(path == null)
 		{
-			path = ImageFileManager.save(this.canvas.getImage());
-			this.canvas.setSavePath(path);
+			saveCanvasAs();
 		}else {
-			ImageFileManager.save(this.canvas.getImage(), path);
+			BufferedImage original = this.canvas.getImage();
+			BufferedImage scaled = ImageFileManager.resize(original, this.canvas.getSaveWidth(), this.canvas.getSaveHeight());
+			ImageFileManager.save(scaled, path);
 		}
 	}
 	
@@ -108,8 +110,20 @@ public class MainController {
 	{
 		if(this.canvas == null)
 			return;
-		String path = ImageFileManager.save(this.canvas.getImage());
-		this.canvas.setSavePath(path);
+		
+		SaveCanvasDialog d = new SaveCanvasDialog(this.mainFrame, this.canvas);
+		
+		int closeOption = d.showOpenDialog();
+		
+		if(closeOption != SaveCanvasDialog.APPROVE_OPTION)
+			return;
+		
+		
+		BufferedImage scaled = ImageFileManager.resize(this.canvas.getImage(), d.getChosenWidth(), d.getChosenHeight());
+		ImageFileManager.save(scaled, d.getChosenAbsolutePath());
+		this.canvas.setSavePath(d.getChosenAbsolutePath());
+		this.canvas.setSaveWidth(d.getChosenWidth());
+		this.canvas.setSaveHeight(d.getChosenHeight());
 	}
 	
 	// setters and getters
@@ -158,10 +172,14 @@ public class MainController {
 	}
 
 
-
 	public JPanel getCanvasPanel() {
 		// TODO Auto-generated method stub
 		return this.canvasPanel;
+	}
+	
+	public double calculateScale(int width, int height)
+	{
+		return 2;
 	}
 
 	

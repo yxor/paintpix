@@ -11,7 +11,11 @@ import tools.Tool;
 @SuppressWarnings("serial")
 public class PixelCanvas extends JComponent{
 	private BufferedImage pixels; 
+	
+	// save information
 	private String savePath;
+	private int saveWidth;
+	private int saveHeight;
 	
 	private double scaleFactor;
 	private int width, height;
@@ -355,6 +359,22 @@ public class PixelCanvas extends JComponent{
 		this.savePath = savePath;
 	}
 	
+	public int getSaveWidth() {
+		return saveWidth;
+	}
+
+	public void setSaveWidth(int saveWidth) {
+		this.saveWidth = saveWidth;
+	}
+
+	public int getSaveHeight() {
+		return saveHeight;
+	}
+
+	public void setSaveHeight(int saveHeight) {
+		this.saveHeight = saveHeight;
+	}
+
 	public void setController(MainController controller)
 	{
 		this.controller = controller;
