@@ -1,12 +1,16 @@
 package pixyart;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
+@SuppressWarnings("serial")
 public class MainMenuBar extends JMenuBar{
 	private MainController controller;
 	
@@ -45,13 +49,12 @@ public class MainMenuBar extends JMenuBar{
 			}
 		});
 		
-		JMenuItem saveAsMenuItem = new JMenuItem("Save As..");
+		JMenuItem saveAsMenuItem = new JMenuItem("Save As...");
 		saveAsMenuItem.addActionListener(new AbstractAction() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.saveCanvasAs();
-				
+				controller.saveCanvasAs();	
 			}
 		});
 		
@@ -60,7 +63,7 @@ public class MainMenuBar extends JMenuBar{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				controller.getMainFrame().dispose();
 				
 			}
 		});
@@ -71,7 +74,61 @@ public class MainMenuBar extends JMenuBar{
 		fileMenu.add(saveAsMenuItem);
 		fileMenu.add(exitMenuItem);
 		
+		JMenu editMenu = new JMenu("Edit");
+		JMenuItem undoMenuItem = new JMenuItem("Undo", KeyEvent.VK_U);
+		undoMenuItem.addActionListener(new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(controller.getCanvas() == null)
+					return;
+				controller.getCanvas().undo();
+				
+			}
+		});
+		
+		JMenuItem redoMenuItem = new JMenuItem("Redo", KeyEvent.VK_R);
+		redoMenuItem.addActionListener(new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(controller.getCanvas() == null)
+					return;
+				controller.getCanvas().redo();
+				
+			}
+		});
+
+		editMenu.add(undoMenuItem);
+		editMenu.add(redoMenuItem);
+		editMenu.addMenuListener(new MenuListener() {
+			
+			@Override
+			public void menuSelected(MenuEvent e) {
+				PixelCanvas canvas = controller.getCanvas();
+				if(canvas == null) {
+					undoMenuItem.setEnabled(false);
+					redoMenuItem.setEnabled(false);
+					return;
+				}
+					
+				boolean canUndo = canvas.canUndo();
+				boolean canRedo = canvas.canRedo();
+				
+				undoMenuItem.setEnabled(canUndo);
+				redoMenuItem.setEnabled(canRedo);
+			}
+			
+			@Override
+			public void menuDeselected(MenuEvent e) {}
+			
+			@Override
+			public void menuCanceled(MenuEvent e) {}
+		});
+		
 		this.add(fileMenu);
+		this.add(editMenu);
+		this.revalidate();
 	}
 	
 	public MainMenuBar(MainController controller)

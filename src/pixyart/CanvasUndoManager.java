@@ -45,13 +45,15 @@ public class CanvasUndoManager {
 	}
 	
 	
-	public static BufferedImage deepCopy(BufferedImage image) {
-	    ColorModel cm = image.getColorModel();
-	    boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
-	    WritableRaster raster = image.copyData(image.getRaster().createCompatibleWritableRaster());
-	    return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+	public boolean canUndo()
+	{
+		return !this.history.isEmpty();
 	}
 
+	public boolean canRedo()
+	{
+		return !this.undoed.isEmpty();
+	}
 	
 	
 }

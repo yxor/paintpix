@@ -237,6 +237,15 @@ public class PixelCanvas extends JComponent{
 		repaint();
 	}
 	
+	public boolean canUndo() 
+	{
+		return this.undoManager.canUndo();
+	}
+	
+	public boolean canRedo() 
+	{
+		return this.undoManager.canRedo();
+	}
 	
 	public void eyeDrop(int x, int y, boolean primaryColor) {
 		int rgb = this.pixels.getRGB(getScaledCoord(x), getScaledCoord(y));

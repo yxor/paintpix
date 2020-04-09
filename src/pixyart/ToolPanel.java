@@ -32,10 +32,27 @@ public class ToolPanel extends JToolBar {
 		
 		
 		String[] buttonLabels = {"Open", "Save", "Save As", "Pencil", "Brush", "Eraser", "EyeDropper", "Bucket"};
+		ImageIcon[] buttonIcons = {
+				new ImageIcon("resources/open.png"),
+				new ImageIcon("resources/save.png"),
+				new ImageIcon("resources/saveas.png"),
+				new ImageIcon("resources/pencil.png"),
+				new ImageIcon("resources/brush.png"),
+				new ImageIcon("resources/eraser.png"),
+				new ImageIcon("resources/eyedropper.png"),
+				new ImageIcon("resources/bucket.png")
+				};
 		
 		JButton[] buttons = new JButton[buttonLabels.length];
 		for (int i = 0; i < buttons.length; i++) {
-			buttons[i] = new JButton(buttonLabels[i]);
+			if(buttonIcons[i] == null)
+				buttons[i] = new JButton(buttonLabels[i]);
+			else
+				buttons[i] = new JButton(buttonIcons[i]);
+			
+			buttons[i].setSize(20, 20);
+			buttons[i].setActionCommand(buttonLabels[i]);
+			buttons[i].setToolTipText(buttonLabels[i]);
 			buttons[i].addActionListener(listener);
 			this.add(buttons[i]);
 			this.addSeparator();
