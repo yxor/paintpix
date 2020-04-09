@@ -49,7 +49,6 @@ public class BrushTool extends Tool{
     	visited.add(canvas.getScaledCoord(coords));
     	Color c = ((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == MouseEvent.BUTTON1_DOWN_MASK)? canvas.getPrimaryColor(): canvas.getSecondaryColor();
 
-    	
     	canvas.drawBrush(coords.x, coords.y, c, size);
     	canvas.repaint();
     }

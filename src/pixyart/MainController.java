@@ -29,7 +29,15 @@ public class MainController {
 		this.colorPicker.setController(this);
 	}
 	
-
+	public void createNewCanvas()
+	{
+		NewCanvasDialog d = new NewCanvasDialog(this.mainFrame);
+		int closeOption = d.showOpenDialog();
+		if(closeOption == NewCanvasDialog.APPROVE_OPTION) {
+			createCanvas(d.getChosenWidth(), d.getChosenHeight());
+			this.canvas.fill(d.getChosenFillColor());
+		}
+	}
 	
 	public void createCanvas(int width, int height)
 	{

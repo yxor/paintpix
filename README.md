@@ -16,7 +16,7 @@ Desktop application to create pixel art Images.
 
 -	~file saving~
 
--	Add tool icons
+-	~Add tool icons~
 
 -	~Fix UndoManager~
 

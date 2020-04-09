@@ -31,8 +31,9 @@ public class ToolPanel extends JToolBar {
 		this.eraser = new EraserTool();
 		
 		
-		String[] buttonLabels = {"Open", "Save", "Save As", "Pencil", "Brush", "Eraser", "EyeDropper", "Bucket"};
+		String[] buttonLabels = {"New", "Open", "Save", "Save As", "Pencil", "Brush", "Eraser", "EyeDropper", "Bucket"};
 		ImageIcon[] buttonIcons = {
+				new ImageIcon("resources/new.png"),
 				new ImageIcon("resources/open.png"),
 				new ImageIcon("resources/save.png"),
 				new ImageIcon("resources/saveas.png"),
@@ -65,7 +66,9 @@ public class ToolPanel extends JToolBar {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			switch(e.getActionCommand()) {
-			
+			case "New":
+				controller.createNewCanvas();
+				break;
 			case "Open":
 				controller.openCanvasFromFileSystem();
 				break;

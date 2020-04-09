@@ -40,7 +40,7 @@ public class PixelCanvas extends JComponent{
 	 * @param height Canvas height.
 	 */
 	public PixelCanvas(int width, int height) {
-		this.pixels = new BufferedImage(height, width, BufferedImage.TYPE_INT_ARGB);
+		this.pixels = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		this.pixels.setAccelerationPriority(1);
 		this.scaleFactor = 1.0F;
 		this.width = width + 2;
@@ -105,6 +105,15 @@ public class PixelCanvas extends JComponent{
 		g2d.dispose();
     }
 	
+	public void fill(Color c)
+	{
+		Graphics2D g2d = this.pixels.createGraphics();
+		g2d.setColor(c);
+		g2d.setComposite(AlphaComposite.Src);
+		g2d.fillRect(0, 0, this.pixels.getWidth(), this.pixels.getWidth());
+		repaint();
+		
+	}
 	
 	public void drawPixel(int x, int y, Color c)
 	{
