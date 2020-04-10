@@ -5,6 +5,8 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.HashSet;
 
+import javax.swing.ImageIcon;
+
 import pixyart.PixelCanvas;
 
 public class BrushTool extends Tool{
@@ -13,6 +15,12 @@ public class BrushTool extends Tool{
 	
 	public BrushTool() {
 		super();
+		this.size = 5;
+		this.visited = new HashSet<Point>();
+	}
+	
+	public BrushTool(ImageIcon icon) {
+		super(icon);
 		this.size = 5;
 		this.visited = new HashSet<Point>();
 	}

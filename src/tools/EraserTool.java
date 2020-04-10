@@ -3,6 +3,8 @@ package tools;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import javax.swing.ImageIcon;
+
 import pixyart.PixelCanvas;
 
 public class EraserTool extends Tool{
@@ -10,6 +12,13 @@ public class EraserTool extends Tool{
 	private boolean pressed;
 	
 	public EraserTool() {
+		super();
+		this.size = 5;
+		this.pressed = false;
+	}
+	
+	public EraserTool(ImageIcon icon) {
+		super(icon);
 		this.size = 5;
 		this.pressed = false;
 	}

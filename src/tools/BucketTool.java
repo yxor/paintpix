@@ -3,12 +3,23 @@ package tools;
 import java.awt.*;
 import java.awt.event.*;
 
+import javax.swing.ImageIcon;
+
 import pixyart.PixelCanvas;
 
 
 public class BucketTool extends Tool {	
 	
-    public void mousePressed(MouseEvent e)
+	public BucketTool() {
+		super();
+	}
+	
+    public BucketTool(ImageIcon icon) {
+		super(icon);
+	}
+    
+
+	public void mousePressed(MouseEvent e)
     {
     	PixelCanvas canvas = (PixelCanvas) e.getSource();
     	Point coords = e.getPoint();

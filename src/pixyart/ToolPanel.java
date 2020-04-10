@@ -36,9 +36,9 @@ public class ToolPanel extends JToolBar {
 				new ImageIcon("resources/new.png"),
 				new ImageIcon("resources/open.png"),
 				new ImageIcon("resources/save.png"),
-				new ImageIcon("resources/saveas.png"),
-				new ImageIcon("resources/pencil.png"),
-				new ImageIcon("resources/brush.png"),
+				new ImageIcon("resources/save.png"),
+				new ImageIcon("resources/pencil_1.png"),
+				new ImageIcon("resources/paintbrush.png"),
 				new ImageIcon("resources/eraser.png"),
 				new ImageIcon("resources/eyedropper.png"),
 				new ImageIcon("resources/bucket.png")

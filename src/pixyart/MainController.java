@@ -48,7 +48,8 @@ public class MainController {
 			this.mainFrame.revalidate();
 		}
 		this.canvas = new PixelCanvas(width, height);
-		this.canvas.setScale(10.0F); // TODO: fix this and make it dynamically picked
+		// setting initial scale dynamically
+		this.canvas.setScale(this.calculateScale());
 		this.canvas.setController(this);
 		this.canvasPanel.add(this.canvas);
 		this.mainFrame.getCanvasContainer().repaint();
@@ -65,7 +66,8 @@ public class MainController {
 			this.mainFrame.revalidate();
 		}
 		this.canvas = new PixelCanvas(image);
-		this.canvas.setScale(10.0F);
+		// setting initial scale dynamically
+		this.canvas.setScale(this.calculateScale());
 		this.canvas.setController(this);
 		this.canvasPanel.add(this.canvas);
 		this.mainFrame.getCanvasContainer().repaint();
@@ -200,9 +202,13 @@ public class MainController {
 		return this.canvasPanel;
 	}
 	
-	public double calculateScale(int width, int height)
+	public double calculateScale()
 	{
-		return 2;
+		if(this.canvas == null)
+			return 0;
+		double widthScale = (double)(this.mainFrame.getWidth()/2) / this.canvas.getImage().getWidth();
+		double heightScale = (double)(this.mainFrame.getHeight()/2) / this.canvas.getImage().getHeight();
+		return Math.min(widthScale, heightScale);
 	}
 
 	

@@ -4,12 +4,22 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.HashSet;
 
+import javax.swing.ImageIcon;
+
 import pixyart.*;
 
 
 public class PencilTool extends Tool {
 	private HashSet<Point> visited = new HashSet<Point>();
 	
+	public PencilTool() {
+		super();
+	}
+	
+	public PencilTool(ImageIcon icon) {
+		super(icon);
+	}
+
     public void mousePressed(MouseEvent e)
     {
     	PixelCanvas canvas = (PixelCanvas) e.getSource();
