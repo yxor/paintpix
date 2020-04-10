@@ -1,8 +1,8 @@
 package pixyart;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import tools.Tool;
@@ -58,6 +58,7 @@ public class MainController {
 	
 	public void createCanvas(BufferedImage image)
 	{
+		
 		if(this.canvas != null)
 		{
 			this.canvasPanel.remove(this.canvas);
@@ -83,6 +84,8 @@ public class MainController {
 	{
 		
 		BufferedImage image = ImageFileManager.open();
+		if(image == null)
+			return;
 		this.createCanvas(image);
 		this.canvas.setSavePath(ImageFileManager.latestPath);
 		this.canvas.setSaveHeight(this.canvas.getImage().getHeight());
@@ -104,6 +107,26 @@ public class MainController {
 			BufferedImage scaled = ImageFileManager.resize(original, this.canvas.getSaveWidth(), this.canvas.getSaveHeight());
 			ImageFileManager.save(scaled, path);
 		}
+	}
+	
+	public void closeCanvas()
+	{
+		if(this.canvas == null)
+			return;
+		int choice = JOptionPane.showConfirmDialog(this.mainFrame, "Do you want to save?", "Closing Canvas", JOptionPane.YES_NO_CANCEL_OPTION);
+		switch(choice)
+		{
+		case JOptionPane.CANCEL_OPTION:
+			return;
+		case JOptionPane.NO_OPTION:
+			break;
+		case JOptionPane.OK_OPTION:
+			this.saveCanvas();
+		}
+		
+		this.canvasPanel.remove(this.canvas);
+		this.mainFrame.revalidate();
+		
 	}
 	
 	public void saveCanvasAs()

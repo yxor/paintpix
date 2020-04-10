@@ -11,6 +11,7 @@ public class MainFrame extends JFrame  {
 	private ToolPanel tools;
 	private JPanel canvasPanel;
 	private JScrollPane canvasContainer;
+	private MainController controller;
 	
 	public MainFrame() {
 	    super("Pixy Art"); // temporary name
@@ -27,6 +28,7 @@ public class MainFrame extends JFrame  {
 	        @Override
 	        public void windowClosing(WindowEvent e) {
 	        	// TODO: add prompt user to save if unsaved
+	        	MainFrame.this.controller.closeCanvas();
 	        	MainFrame.this.setVisible(false);
 	        	MainFrame.this.dispose();
 	        }
@@ -43,7 +45,7 @@ public class MainFrame extends JFrame  {
         GlobalKeyBinder globalKeyBinder = new GlobalKeyBinder(this.getRootPane());
 
         // creating Main controller
-        MainController controller = new MainController(this);
+        controller = new MainController(this);
         globalKeyBinder.setController(controller);
         
 

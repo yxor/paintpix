@@ -37,7 +37,9 @@ public class SaveCanvasDialog extends JDialog {
 	
 	public SaveCanvasDialog(JFrame parent, PixelCanvas canvas) {
 		super(parent, "Save a Canvas", true);
-
+		this.width = canvas.getImage().getWidth();
+		this.height = canvas.getImage().getHeight();
+		this.scale = 1.0F;
 		
 		JFormattedTextField savePath = new JFormattedTextField();
 		savePath.setValue(canvas.getSavePath());

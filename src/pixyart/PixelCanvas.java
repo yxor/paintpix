@@ -16,6 +16,7 @@ public class PixelCanvas extends JComponent{
 	private String savePath;
 	private int saveWidth;
 	private int saveHeight;
+	private boolean changedAfterSave = false;
 	
 	private double scaleFactor;
 	private int width, height;
@@ -65,7 +66,6 @@ public class PixelCanvas extends JComponent{
 	 */
 	public PixelCanvas(BufferedImage image) {
 		this.pixels = image;
-
 		this.scaleFactor = 1.0F;
 		this.width = image.getWidth() + 2;
 		this.height = image.getHeight() + 2;
@@ -226,6 +226,7 @@ public class PixelCanvas extends JComponent{
 	
 	public void changeHappened()
 	{
+		this.changedAfterSave = true;
 		this.undoManager.changeHappened(this.pixels.getData());
 	}
 	
@@ -356,6 +357,7 @@ public class PixelCanvas extends JComponent{
 	}
 
 	public void setSavePath(String savePath) {
+		this.changedAfterSave = false;
 		this.savePath = savePath;
 	}
 	
@@ -373,6 +375,11 @@ public class PixelCanvas extends JComponent{
 
 	public void setSaveHeight(int saveHeight) {
 		this.saveHeight = saveHeight;
+	}
+	
+	public boolean isChangedAfterSave()
+	{
+		return this.changedAfterSave;
 	}
 
 	public void setController(MainController controller)
