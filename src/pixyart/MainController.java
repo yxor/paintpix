@@ -13,7 +13,8 @@ import tools.Tool;
  */
 public class MainController {
 	private MainFrame mainFrame;
-	private ToolPanel tools;
+	private ToolPanel toolPanel;
+	private ControlPanel controlPanel;
 	private ColorPicker colorPicker;
 	
 	private JPanel canvasPanel;
@@ -22,11 +23,13 @@ public class MainController {
 	
 	public MainController(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
-		this.tools = mainFrame.getTools();
+		this.toolPanel = mainFrame.getTools();
 		this.colorPicker = mainFrame.getColorPicker();
 		this.canvasPanel = mainFrame.getCanvasPanel();
+		this.controlPanel = mainFrame.getControlPanel();
 		
-		this.tools.setController(this);
+		this.controlPanel.setController(this);
+		this.toolPanel.setController(this);
 		this.colorPicker.setController(this);
 	}
 	
@@ -111,23 +114,28 @@ public class MainController {
 		}
 	}
 	
-	public void closeCanvas()
+	public boolean closeCanvas()
 	{
 		if(this.canvas == null)
-			return;
+			return true;
+		if(!this.canvas.isChangedAfterSave())
+			return true;
+
 		int choice = JOptionPane.showConfirmDialog(this.mainFrame, "Do you want to save?", "Closing Canvas", JOptionPane.YES_NO_CANCEL_OPTION);
 		switch(choice)
 		{
-		case JOptionPane.CANCEL_OPTION:
-			return;
 		case JOptionPane.NO_OPTION:
 			break;
 		case JOptionPane.OK_OPTION:
 			this.saveCanvas();
+			break;
+		default:
+			return false;
 		}
 		
 		this.canvasPanel.remove(this.canvas);
 		this.mainFrame.revalidate();
+		return true;
 		
 	}
 	
@@ -175,13 +183,13 @@ public class MainController {
 
 	public ToolPanel getTools() 
 	{
-		return tools;
+		return toolPanel;
 	}
 
 
 	public void setTools(ToolPanel tools) 
 	{
-		this.tools = tools;
+		this.toolPanel = tools;
 	}
 
 
@@ -198,7 +206,6 @@ public class MainController {
 
 
 	public JPanel getCanvasPanel() {
-		// TODO Auto-generated method stub
 		return this.canvasPanel;
 	}
 	

@@ -8,8 +8,10 @@ import java.awt.*;
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame  {
 	private ColorPicker colorPicker;
-	private ToolPanel tools;
+	private ToolPanel toolPanel;
 	private JPanel canvasPanel;
+	private ControlPanel controlPanel;
+	
 	private JScrollPane canvasContainer;
 	private MainController controller;
 	
@@ -28,7 +30,9 @@ public class MainFrame extends JFrame  {
 	        @Override
 	        public void windowClosing(WindowEvent e) {
 	        	// TODO: add prompt user to save if unsaved
-	        	MainFrame.this.controller.closeCanvas();
+	        	boolean closeWindow = MainFrame.this.controller.closeCanvas();
+	        	if(!closeWindow)
+	        		return;
 	        	MainFrame.this.setVisible(false);
 	        	MainFrame.this.dispose();
 	        }
@@ -36,16 +40,19 @@ public class MainFrame extends JFrame  {
 	  
 	    // creating the components
 	    colorPicker = new ColorPicker(Color.BLACK);
-		tools = new ToolPanel();
+		toolPanel = new ToolPanel();
+		controlPanel = new ControlPanel();
 		
 		
         canvasPanel = new JPanel(new GridBagLayout());
         canvasContainer = new JScrollPane(canvasPanel);
         
-        GlobalKeyBinder globalKeyBinder = new GlobalKeyBinder(this.getRootPane());
 
         // creating Main controller
         controller = new MainController(this);
+        
+        // creating a global key binder
+        GlobalKeyBinder globalKeyBinder = new GlobalKeyBinder(this.getRootPane());
         globalKeyBinder.setController(controller);
         
 
@@ -56,7 +63,8 @@ public class MainFrame extends JFrame  {
 
         mainPane.add(canvasContainer, BorderLayout.CENTER);
         mainPane.add(colorPicker, BorderLayout.EAST); 
-        mainPane.add(tools, BorderLayout.NORTH);
+        mainPane.add(toolPanel, BorderLayout.WEST);
+        mainPane.add(controlPanel, BorderLayout.NORTH);
 	    pack();
 	}
 
@@ -65,7 +73,7 @@ public class MainFrame extends JFrame  {
 	}
 
 	public ToolPanel getTools() {
-		return tools;
+		return toolPanel;
 	}
 
 	public JPanel getCanvasPanel() {
@@ -76,6 +84,10 @@ public class MainFrame extends JFrame  {
 		return canvasContainer;
 	}
 	
+	public ControlPanel getControlPanel()
+	{
+		return this.controlPanel;
+	}
 
 	
 }

@@ -16,7 +16,7 @@ public class PixelCanvas extends JComponent{
 	private String savePath;
 	private int saveWidth;
 	private int saveHeight;
-	private boolean changedAfterSave = false;
+	private boolean changedAfterSave = true;
 	
 	private double scaleFactor;
 	private int width, height;

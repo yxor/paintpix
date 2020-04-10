@@ -20,7 +20,7 @@ public class ToolPanel extends JToolBar {
 	
 	
 	public ToolPanel() {
-		super();
+		super("Tools", JToolBar.VERTICAL);
 		
 		ButtonListener listener = new ButtonListener();
 		
@@ -31,12 +31,8 @@ public class ToolPanel extends JToolBar {
 		this.eraser = new EraserTool();
 		
 		
-		String[] buttonLabels = {"New", "Open", "Save", "Save As", "Pencil", "Brush", "Eraser", "EyeDropper", "Bucket"};
+		String[] buttonLabels = {"Pencil", "Brush", "Eraser", "EyeDropper", "Bucket"};
 		ImageIcon[] buttonIcons = {
-				new ImageIcon("resources/new.png"),
-				new ImageIcon("resources/open.png"),
-				new ImageIcon("resources/save.png"),
-				new ImageIcon("resources/save.png"),
 				new ImageIcon("resources/pencil_1.png"),
 				new ImageIcon("resources/paintbrush.png"),
 				new ImageIcon("resources/eraser.png"),
@@ -46,11 +42,7 @@ public class ToolPanel extends JToolBar {
 		
 		JButton[] buttons = new JButton[buttonLabels.length];
 		for (int i = 0; i < buttons.length; i++) {
-			if(buttonIcons[i] == null)
-				buttons[i] = new JButton(buttonLabels[i]);
-			else
-				buttons[i] = new JButton(buttonIcons[i]);
-			
+			buttons[i] = new JButton(buttonIcons[i]);
 			buttons[i].setSize(20, 20);
 			buttons[i].setActionCommand(buttonLabels[i]);
 			buttons[i].setToolTipText(buttonLabels[i]);
@@ -66,21 +58,6 @@ public class ToolPanel extends JToolBar {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			switch(e.getActionCommand()) {
-			case "New":
-				controller.createNewCanvas();
-				break;
-			case "Open":
-				controller.openCanvasFromFileSystem();
-				break;
-				
-			case "Save":
-				controller.saveCanvas();
-				break;
-				
-			case "Save As":
-				controller.saveCanvasAs();
-				break;
-				
 			case "Pencil":
 				controller.setCanvasTool(pencil);
 				break;
