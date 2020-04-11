@@ -20,17 +20,18 @@ Desktop application to create pixel art Images.
 
 -	~Fix UndoManager~
 
--	Add primaryColor and SecondaryColor pickers
+-	~Add primaryColor and SecondaryColor pickers~
 
--	Add new image dialog
+-	~Add new image dialog~
 
--	Add save Image dialog with scaling and stuff
+-	~Add save Image dialog with scaling and stuff~
 
--	Fix layout and make it pretty and cute uwu
+-	~Fix layout and make it pretty and cute uwu~ kinda
 
 -	More Image formats support
 
--	Menu bar and sub menus
+-	~Menu bar and sub menus~
 
--	Add keybindings for **Everything**
+-	Add keybindings and submenus for **Everything**
+
 -	...

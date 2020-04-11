@@ -22,8 +22,7 @@ public class EyeDropperTool extends Tool {
     {
     	PixelCanvas canvas = (PixelCanvas) e.getSource();
     	Point coords = e.getPoint();
-    	boolean primaryColor = (e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == MouseEvent.BUTTON1_DOWN_MASK;
-    	canvas.eyeDrop(coords.x, coords.y, primaryColor);
+    	canvas.eyeDrop(coords.x, coords.y);
     }
     
 }

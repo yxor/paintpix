@@ -16,7 +16,8 @@ public class MainController {
 	private ToolPanel toolPanel;
 	private ControlPanel controlPanel;
 	private ColorPicker colorPicker;
-	
+	private ColorToggler colorToggler;
+
 	private JPanel canvasPanel;
 	private PixelCanvas canvas;
 	
@@ -27,7 +28,9 @@ public class MainController {
 		this.colorPicker = mainFrame.getColorPicker();
 		this.canvasPanel = mainFrame.getCanvasPanel();
 		this.controlPanel = mainFrame.getControlPanel();
+		this.colorToggler = mainFrame.getColorToggler();
 		
+		this.colorToggler.setController(this);
 		this.controlPanel.setController(this);
 		this.toolPanel.setController(this);
 		this.colorPicker.setController(this);
@@ -55,6 +58,7 @@ public class MainController {
 		this.canvas.setScale(this.calculateScale());
 		this.canvas.setController(this);
 		this.canvasPanel.add(this.canvas);
+		this.colorToggler.updateCanvas();
 		this.mainFrame.getCanvasContainer().repaint();
 		this.mainFrame.revalidate();
 	}
@@ -73,6 +77,7 @@ public class MainController {
 		this.canvas.setScale(this.calculateScale());
 		this.canvas.setController(this);
 		this.canvasPanel.add(this.canvas);
+		this.colorToggler.updateCanvas();
 		this.mainFrame.getCanvasContainer().repaint();
 		this.mainFrame.revalidate();
 	}
@@ -208,6 +213,12 @@ public class MainController {
 	public JPanel getCanvasPanel() {
 		return this.canvasPanel;
 	}
+	
+	
+	public ColorToggler getColorToggler() {
+		return colorToggler;
+	}
+
 	
 	public double calculateScale()
 	{

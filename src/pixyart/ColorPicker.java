@@ -15,10 +15,12 @@ public class ColorPicker extends JColorChooser{
 
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			PixelCanvas canvas = ColorPicker.this.controller.getCanvas();
-			if (canvas == null)
+			ColorToggler colorToggler = ColorPicker.this.controller.getColorToggler();
+			
+			if (colorToggler == null)
 				return;
-			canvas.setPrimaryColor(ColorPicker.this.getColor());
+			
+			colorToggler.setColor(ColorPicker.this.getColor());
 		}
 		
 	}

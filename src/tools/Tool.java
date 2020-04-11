@@ -1,15 +1,13 @@
 package tools;
 
 import javax.swing.ImageIcon;
-import javax.swing.event.MouseInputListener;
-
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.*;
 
 
-public abstract class Tool extends MouseAdapter implements MouseInputListener{
+public abstract class Tool extends MouseAdapter{
 	private Cursor cursor;
 	
 	public Tool()

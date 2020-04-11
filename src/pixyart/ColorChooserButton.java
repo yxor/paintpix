@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 
 @SuppressWarnings("serial")
 public class ColorChooserButton extends JButton {
@@ -19,8 +20,8 @@ public class ColorChooserButton extends JButton {
         setSelectedColor(c); 
         addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent arg0) {
-                Color newColor = ColorPicker.showDialog(null, prompt, current);
+            public void actionPerformed(ActionEvent e) {
+                Color newColor = JColorChooser.showDialog(null, prompt, current);
                 setSelectedColor(newColor);
             }
         });
@@ -43,7 +44,6 @@ public class ColorChooserButton extends JButton {
         repaint();
 
         if (notify) {
-            // Notify everybody that may be interested.
             for (ColorChangedListener l : listeners) {
                 l.colorChanged(newColor);
             }

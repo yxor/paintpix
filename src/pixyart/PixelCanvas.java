@@ -261,15 +261,12 @@ public class PixelCanvas extends JComponent{
 		return this.undoManager.canRedo();
 	}
 	
-	public void eyeDrop(int x, int y, boolean primaryColor) {
+	public void eyeDrop(int x, int y) {
 		int rgb = this.pixels.getRGB(getScaledCoord(x), getScaledCoord(y));
 		Color c = new Color(rgb, true);
 		
 		this.controller.getColorPicker().setColor(c);
-		if(primaryColor)
-			this.primaryColor = c;
-		else
-			this.secondaryColor = c;
+		
 	}
 	
 	public BufferedImage getImage()

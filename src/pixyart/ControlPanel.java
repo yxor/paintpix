@@ -51,18 +51,22 @@ public class ControlPanel extends JToolBar {
 				controller.openCanvasFromFileSystem();
 				break;	
 			case "Save":
+				if(controller.getCanvas() == null) return;
 				controller.saveCanvas();
 				break;
 				
 			case "Save As":
+				if(controller.getCanvas() == null) return;
 				controller.saveCanvasAs();
 				break;
 				
 			case "Undo":
+				if(controller.getCanvas() == null) return;
 				controller.getCanvas().undo();
 				break;
 				
 			case "Redo":
+				if(controller.getCanvas() == null) return;
 				controller.getCanvas().redo();
 				break;
 				
