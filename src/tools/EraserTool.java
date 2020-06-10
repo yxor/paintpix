@@ -8,18 +8,15 @@ import javax.swing.ImageIcon;
 import pixyart.PixelCanvas;
 
 public class EraserTool extends Tool{
-	private int size;
 	private boolean pressed;
 	
 	public EraserTool() {
 		super();
-		this.size = 5;
 		this.pressed = false;
 	}
 	
 	public EraserTool(ImageIcon icon) {
 		super(icon);
-		this.size = 5;
 		this.pressed = false;
 	}
 	
@@ -30,7 +27,7 @@ public class EraserTool extends Tool{
     	if(!this.pressed)
     		canvas.changeHappened();
     	this.pressed = true;
-    	canvas.erase(coords.x, coords.y, size);
+    	canvas.erase(coords.x, coords.y);
     	canvas.repaint();
     }
 
@@ -40,7 +37,7 @@ public class EraserTool extends Tool{
     	Point coords = e.getPoint();
     	this.pressed = true;
     	
-    	canvas.erase(coords.x, coords.y, size);
+    	canvas.erase(coords.x, coords.y);
     	canvas.repaint();
     }
 
@@ -52,11 +49,4 @@ public class EraserTool extends Tool{
 
     }
 
-	public int getSize() {
-		return size;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
-	}
 }

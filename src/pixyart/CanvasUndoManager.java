@@ -2,9 +2,11 @@ package pixyart;
 
 
 import java.awt.image.Raster;
+import java.io.Serializable;
 import java.util.concurrent.LinkedBlockingDeque;
 
-public class CanvasUndoManager {
+@SuppressWarnings("serial")
+public class CanvasUndoManager implements Serializable{
 	private LinkedBlockingDeque<Raster> history;
 	private LinkedBlockingDeque<Raster> undoed;
 	

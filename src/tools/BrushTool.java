@@ -10,18 +10,15 @@ import javax.swing.ImageIcon;
 import pixyart.PixelCanvas;
 
 public class BrushTool extends Tool{
-	private int size;
 	private HashSet<Point> visited;
 	
 	public BrushTool() {
 		super();
-		this.size = 5;
 		this.visited = new HashSet<Point>();
 	}
 	
 	public BrushTool(ImageIcon icon) {
 		super(icon);
-		this.size = 5;
 		this.visited = new HashSet<Point>();
 	}
 	
@@ -41,7 +38,7 @@ public class BrushTool extends Tool{
     	visited.add(canvas.getScaledCoord(coords));
     	
     	Color c = ((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == MouseEvent.BUTTON1_DOWN_MASK)? canvas.getPrimaryColor(): canvas.getSecondaryColor();
-    	canvas.drawBrush(coords.x, coords.y, c, size);
+    	canvas.drawBrush(coords.x, coords.y, c);
     	canvas.repaint();
     }
 
@@ -57,7 +54,7 @@ public class BrushTool extends Tool{
     	visited.add(canvas.getScaledCoord(coords));
     	Color c = ((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == MouseEvent.BUTTON1_DOWN_MASK)? canvas.getPrimaryColor(): canvas.getSecondaryColor();
 
-    	canvas.drawBrush(coords.x, coords.y, c, size);
+    	canvas.drawBrush(coords.x, coords.y, c);
     	canvas.repaint();
     }
 
@@ -69,11 +66,4 @@ public class BrushTool extends Tool{
 
     }
 
-	public int getSize() {
-		return size;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
-	}
 }

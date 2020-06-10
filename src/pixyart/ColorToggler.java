@@ -57,6 +57,7 @@ public class ColorToggler extends JToolBar implements ActionListener {
 		add(primaryButtonContainer);
 		addSeparator();
 		add(secondaryButtonContainer);
+		setFloatable(false);
 		defaultBackgroundColor = primaryButtonContainer.getBackground();
 	}
 	
@@ -78,6 +79,16 @@ public class ColorToggler extends JToolBar implements ActionListener {
 		updateCanvas();
 	}
 	
+	public void swapColors() {
+		Color primary = this.primaryColorButton.getSelectedColor();
+		Color secondary = this.secondaryColorButton.getSelectedColor();
+		
+		this.primaryColorButton.setSelectedColor(secondary);
+		this.secondaryColorButton.setSelectedColor(primary);
+		updateCanvas();
+		repaint();
+	}
+	
 	public void updateCanvas()
 	{
 		PixelCanvas canvas = controller.getCanvas();
@@ -95,12 +106,9 @@ public class ColorToggler extends JToolBar implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == this.primaryColorButton)
-		{
-			this.primaryColorPicked = true;
-		}else {
-			this.primaryColorPicked = false;
-		}
+
+		this.primaryColorPicked = e.getSource() == this.primaryColorButton;
+
 		if(this.primaryColorPicked)
 		{
 			this.primaryColorButton.setBackground(selectedBackgroundColor);

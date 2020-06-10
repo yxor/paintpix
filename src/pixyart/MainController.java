@@ -1,9 +1,11 @@
 package pixyart;
 
 import java.awt.image.BufferedImage;
+import java.sql.DatabaseMetaData;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.xml.crypto.Data;
 
 import tools.Tool;
 
@@ -20,8 +22,11 @@ public class MainController {
 
 	private JPanel canvasPanel;
 	private PixelCanvas canvas;
+	private int size;
+	private Tool activeTool;
 	
 	
+
 	public MainController(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
 		this.toolPanel = mainFrame.getTools();
@@ -30,6 +35,8 @@ public class MainController {
 		this.controlPanel = mainFrame.getControlPanel();
 		this.colorToggler = mainFrame.getColorToggler();
 		
+		// start as 2 pixel by default
+		this.size = 2;
 		this.colorToggler.setController(this);
 		this.controlPanel.setController(this);
 		this.toolPanel.setController(this);
@@ -41,38 +48,40 @@ public class MainController {
 		NewCanvasDialog d = new NewCanvasDialog(this.mainFrame);
 		int closeOption = d.showOpenDialog();
 		if(closeOption == NewCanvasDialog.APPROVE_OPTION) {
-			createCanvas(d.getChosenWidth(), d.getChosenHeight());
-			this.canvas.fill(d.getChosenFillColor());
+			boolean created = createCanvas(d.getChosenWidth(), d.getChosenHeight());
+			if(created)
+				this.canvas.fill(d.getChosenFillColor());
 		}
 	}
 	
-	public void createCanvas(int width, int height)
+	public boolean createCanvas(PixelCanvas newCanvas)
 	{
-		if(this.canvas != null)
-		{
-			this.canvasPanel.remove(this.canvas);
-			this.mainFrame.revalidate();
-		}
-		this.canvas = new PixelCanvas(width, height);
-		// setting initial scale dynamically
-		this.canvas.setScale(this.calculateScale());
-		this.canvas.setController(this);
-		this.canvasPanel.add(this.canvas);
-		this.colorToggler.updateCanvas();
-		this.mainFrame.getCanvasContainer().repaint();
-		this.mainFrame.revalidate();
-	}
-	
-	
-	public void createCanvas(BufferedImage image)
-	{
+		boolean closedCanvas = this.closeCanvas();
+		if(!closedCanvas)
+			return false;
 		
-		if(this.canvas != null)
-		{
-			this.canvasPanel.remove(this.canvas);
-			this.mainFrame.revalidate();
-		}
-		this.canvas = new PixelCanvas(image);
+		this.canvas = newCanvas;
+		this.canvas.setSelectedTool(this.activeTool);
+		this.canvas.setScale(this.calculateScale());
+		this.canvas.setController(this);
+		this.canvasPanel.add(this.canvas);
+		this.colorToggler.updateCanvas();
+		this.mainFrame.getCanvasContainer().repaint();
+		this.mainFrame.revalidate();
+		return true;
+	}
+	
+	public boolean createCanvas(int width, int height)
+	{
+		boolean closedCanvas = this.closeCanvas();
+		if(!closedCanvas)
+			return false;
+		
+
+		
+		this.canvas = new PixelCanvas(width, height);
+		this.canvas.setSelectedTool(this.activeTool);
+
 		// setting initial scale dynamically
 		this.canvas.setScale(this.calculateScale());
 		this.canvas.setController(this);
@@ -80,15 +89,37 @@ public class MainController {
 		this.colorToggler.updateCanvas();
 		this.mainFrame.getCanvasContainer().repaint();
 		this.mainFrame.revalidate();
+		return true;
+	}
+	
+	
+	public boolean createCanvas(BufferedImage image)
+	{
+		boolean closedCanvas = this.closeCanvas();
+		if(!closedCanvas)
+			return false;
+		
+		
+		this.canvas = new PixelCanvas(image);
+		this.canvas.setSelectedTool(this.activeTool);
+		// setting initial scale dynamically
+		this.canvas.setScale(this.calculateScale());
+		this.canvas.setController(this);
+		this.canvasPanel.add(this.canvas);
+		this.colorToggler.updateCanvas();
+		this.mainFrame.getCanvasContainer().repaint();
+		this.mainFrame.revalidate();
+		return true;
 	}
 	
 	public void setCanvasTool(Tool t)
 	{
 		if(this.canvas == null)
 			return;
-		
+		this.activeTool = t;
 		this.canvas.setSelectedTool(t);
 	}
+	
 	
 	public void openCanvasFromFileSystem()
 	{
@@ -96,7 +127,11 @@ public class MainController {
 		BufferedImage image = ImageFileManager.open();
 		if(image == null)
 			return;
-		this.createCanvas(image);
+		boolean created = this.createCanvas(image);
+		// return if the canvas was not created
+		if(!created)
+			return;
+		
 		this.canvas.setSavePath(ImageFileManager.latestPath);
 		this.canvas.setSaveHeight(this.canvas.getImage().getHeight());
 		this.canvas.setSaveWidth(this.canvas.getImage().getWidth());
@@ -119,14 +154,26 @@ public class MainController {
 		}
 	}
 	
+	/**
+	 * Closes the current canvas, if the canvas is not saved it prompts the user 
+	 * and asks them if they want to save.
+	 * 
+	 * 
+	 * @return true if the canvas is null or was saved, false otherwise
+	 *
+	*/
 	public boolean closeCanvas()
 	{
 		if(this.canvas == null)
 			return true;
-		if(!this.canvas.isChangedAfterSave())
+		
+		if(!this.canvas.isChangedAfterSave()) {
+			this.removeCanvas();
 			return true;
+		}
 
 		int choice = JOptionPane.showConfirmDialog(this.mainFrame, "Do you want to save?", "Closing Canvas", JOptionPane.YES_NO_CANCEL_OPTION);
+		
 		switch(choice)
 		{
 		case JOptionPane.NO_OPTION:
@@ -138,10 +185,33 @@ public class MainController {
 			return false;
 		}
 		
-		this.canvasPanel.remove(this.canvas);
-		this.mainFrame.revalidate();
+		this.removeCanvas();
 		return true;
+	}
+	
+	
+	/**
+	 * Removes the canvas. 
+	*/
+	public void removeCanvas() 
+	{
+		if(this.canvas == null)
+			return;
 		
+		this.canvasPanel.remove(this.canvas);
+		this.canvasPanel.repaint();
+		
+		byte[] canvasData = this.canvas.toBytes();
+		
+		// insert canvas to database
+		String name = "Untitled";
+		if(this.canvas.getSavePath() != null)
+			name = this.canvas.getSavePath().split("/")[this.canvas.getSavePath().split("/").length - 1];
+		
+		DatabaseManager.insert(name, canvasData);
+		
+		this.canvas = null;
+		this.mainFrame.revalidate();
 	}
 	
 	public void saveCanvasAs()
@@ -163,6 +233,19 @@ public class MainController {
 		this.canvas.setSaveWidth(d.getChosenWidth());
 		this.canvas.setSaveHeight(d.getChosenHeight());
 	}
+	
+	
+	public double calculateScale()
+	{
+		if(this.canvas == null)
+			return 0;
+		double widthScale = (double)(this.mainFrame.getWidth()/2) / this.canvas.getImage().getWidth();
+		double heightScale = (double)(this.mainFrame.getHeight()/2) / this.canvas.getImage().getHeight();
+		return Math.min(widthScale, heightScale);
+	}
+
+
+	
 	
 	// setters and getters
 	
@@ -219,16 +302,13 @@ public class MainController {
 		return colorToggler;
 	}
 
-	
-	public double calculateScale()
-	{
-		if(this.canvas == null)
-			return 0;
-		double widthScale = (double)(this.mainFrame.getWidth()/2) / this.canvas.getImage().getWidth();
-		double heightScale = (double)(this.mainFrame.getHeight()/2) / this.canvas.getImage().getHeight();
-		return Math.min(widthScale, heightScale);
+	public int getSize() {
+		return size;
 	}
 
+	public void setSize(int size) {
+		this.size = size;
+	}
 	
 	
 }

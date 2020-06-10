@@ -10,6 +10,7 @@ public class Main {
 		
 	    EventQueue.invokeLater(new Runnable() {
 	    	public void run() {
+	    		DatabaseManager.connect("test.db");
 	        	try{
 	        	    // UI manager changes
 	        	    UIManager.put("ColorChooser.swatchesRecentSwatchSize", new Dimension(20, 20));

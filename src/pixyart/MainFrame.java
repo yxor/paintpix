@@ -12,6 +12,7 @@ public class MainFrame extends JFrame  {
 	private JPanel canvasPanel;
 	private ControlPanel controlPanel;
 	private ColorToggler colorToggler;
+	private ToolSizeSlider sizeSlider;
 	
 	private JScrollPane canvasContainer;
 	private MainController controller;
@@ -30,10 +31,11 @@ public class MainFrame extends JFrame  {
 	    addWindowListener(new WindowAdapter() {
 	        @Override
 	        public void windowClosing(WindowEvent e) {
-	        	// TODO: add prompt user to save if unsaved
 	        	boolean closeWindow = MainFrame.this.controller.closeCanvas();
 	        	if(!closeWindow)
 	        		return;
+	        	
+	        	DatabaseManager.disconnect();
 	        	MainFrame.this.setVisible(false);
 	        	MainFrame.this.dispose();
 	        }
@@ -56,6 +58,11 @@ public class MainFrame extends JFrame  {
         // creating a global key binder
         GlobalKeyBinder globalKeyBinder = new GlobalKeyBinder(this.getRootPane());
         globalKeyBinder.setController(controller);
+        
+        sizeSlider = new ToolSizeSlider();
+        controlPanel.add(sizeSlider);
+        sizeSlider.setController(controller);
+        
         
 
         // creating the menu bar

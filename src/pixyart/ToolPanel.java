@@ -51,7 +51,7 @@ public class ToolPanel extends JToolBar {
 			this.addSeparator();
 		}
 		
-		
+		setFloatable(false);
 	}
 
 	private class ButtonListener implements ActionListener {

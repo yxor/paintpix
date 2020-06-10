@@ -3,14 +3,26 @@ package pixyart;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.*;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import tools.Tool;
 
 @SuppressWarnings("serial")
-public class PixelCanvas extends JComponent{
-	private BufferedImage pixels; 
+/**
+ * Custom Canvas component
+ */
+public class PixelCanvas extends JComponent implements Serializable{
+	transient private BufferedImage pixels; 
 	
 	// save information
 	private String savePath;
@@ -23,21 +35,27 @@ public class PixelCanvas extends JComponent{
 	private Color primaryColor;
 	private Color secondaryColor;
 	
-	private Tool selectedTool;
-	private CanvasUndoManager undoManager = new CanvasUndoManager();
-	private MainController controller;
-	private MouseAdapter mouseAdapter = new MouseAdapter () {
-		
-    	public void mouseWheelMoved(MouseWheelEvent e)
-        {
-    		double scale = e.getPreciseWheelRotation();
-    		Point p = e.getPoint();
-    		PixelCanvas.this.zoom(scale, p);
-
-        }
-    };
+	transient private Tool selectedTool;
+	transient private CanvasUndoManager undoManager;
+	transient private MainController controller;
+	transient private MouseAdapter mouseAdapter;
 	
 
+    private PixelCanvas() {
+    	this.mouseAdapter = new MouseAdapter () {
+    		
+        	public void mouseWheelMoved(MouseWheelEvent e)
+            {
+        		double scale = e.getPreciseWheelRotation();
+        		Point p = e.getPoint();
+        		PixelCanvas.this.zoom(scale, p);
+
+            }
+        };
+        
+        this.undoManager = new CanvasUndoManager();
+    }
+    
 	/**
 	 * Constructor that creates an empty canvas.
 	 * 
@@ -45,6 +63,7 @@ public class PixelCanvas extends JComponent{
 	 * @param height Canvas height.
 	 */
 	public PixelCanvas(int width, int height) {
+		this();
 		this.pixels = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		this.pixels.setAccelerationPriority(1);
 		this.scaleFactor = 1.0F;
@@ -54,7 +73,6 @@ public class PixelCanvas extends JComponent{
 		this.secondaryColor = new Color(255, 255, 255, 0);
         this.setPreferredSize(new Dimension(width+2, height+2));
 
-		// zooming in and out support TODO improve this
 		
         addMouseWheelListener(mouseAdapter);
 	}
@@ -65,6 +83,7 @@ public class PixelCanvas extends JComponent{
 	 * @param image Canvas width.
 	 */
 	public PixelCanvas(BufferedImage image) {
+		this();
 		this.pixels = image;
 		this.scaleFactor = 1.0F;
 		this.width = image.getWidth() + 2;
@@ -139,9 +158,14 @@ public class PixelCanvas extends JComponent{
 	public void zoom(double scale, Point p)
 	{	
 		JPanel canvasPanel = this.controller.getCanvasPanel();
-
 		double oldScale = this.scaleFactor;
-		this.scaleFactor *= (scale < 0) ? 1.1f : 0.9f;
+		double newScale = scaleFactor * ((scale < 0) ? 1.1f : 0.9f);
+		// restrict zooming in too far or out too far (10 times).
+		double scaleByDefault = newScale / controller.calculateScale();
+		if(scaleByDefault < 0.1 || scaleByDefault > 10)
+			return;
+		
+		this.scaleFactor = newScale;
 		double scaleChange = this.scaleFactor / oldScale;
 		
         Rectangle visibleRect = canvasPanel.getVisibleRect();
@@ -154,8 +178,9 @@ public class PixelCanvas extends JComponent{
 	}
 	
 	
-	public void drawBrush(int x, int y, Color c, int size)
+	public void drawBrush(int x, int y, Color c)
 	{
+		int size = controller.getSize();
 		int realX = this.getScaledCoord(x, size);
 		int realY = this.getScaledCoord(y, size);
 		
@@ -170,8 +195,9 @@ public class PixelCanvas extends JComponent{
 		g2d.dispose();
 	}
 	
-	public void erase(int x, int y, int size)
+	public void erase(int x, int y)
 	{
+		int size = controller.getSize();
 		int realX = this.getScaledCoord(x, size);
 		int realY = this.getScaledCoord(y, size);
 		
@@ -384,5 +410,72 @@ public class PixelCanvas extends JComponent{
 		this.controller = controller;
 	}
 
+	public byte[] toBytes() {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutputStream out = null;
+		try {
+			out = new ObjectOutputStream(bos);
+			// serialize the whole object
+			out.writeObject(this);
+			out.flush();
+			
+			// serialize the pixels
+			ImageIO.setUseCache(false);
+			ImageIO.write(this.pixels, "png", out);
+			
+			byte[] bytes = bos.toByteArray();
+		  
+			return bytes;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				bos.close();
+			} catch (IOException ex) {
+				// ignore close exception
+			}
+		}
+		
+		return null;
+	}
+	
+	public static PixelCanvas fromBytes(byte[] bytes) {
+		ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+		ObjectInputStream in = null;
+		try {
+			in = new ObjectInputStream(bis);
+			
+			PixelCanvas canvas = (PixelCanvas) in.readObject();
+			
+			BufferedImage image = ImageIO.read(in);
+			canvas.pixels = image;
+			canvas.addMouseWheelListener(new MouseAdapter () {
+	    		
+	        	public void mouseWheelMoved(MouseWheelEvent e)
+	            {
+	        		double scale = e.getPreciseWheelRotation();
+	        		Point p = e.getPoint();
+	        		canvas.zoom(scale, p);
+
+	            }
+	        });
+	        
+	        canvas.undoManager = new CanvasUndoManager();
+			return canvas;
+		  
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (in != null) {
+					in.close();
+				}
+			} catch (IOException ex) {
+				// ignore close exception
+			}
+		}
+		
+		return null;
+	}
 	
 }

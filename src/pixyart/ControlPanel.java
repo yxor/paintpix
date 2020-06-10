@@ -15,7 +15,7 @@ public class ControlPanel extends JToolBar {
 		
 		ButtonListener listener = new ButtonListener();
 		
-		String[] buttonLabels = {"New", "Open", "Save", "Save As", "Undo", "Redo", "Preview"};
+		String[] buttonLabels = {"New", "Open", "Save", "Save As", "Undo", "Redo"};
 		ImageIcon[] buttonIcons = {
 				new ImageIcon("resources/new.png"),
 				new ImageIcon("resources/open.png"),
@@ -23,7 +23,6 @@ public class ControlPanel extends JToolBar {
 				new ImageIcon("resources/save.png"),
 				new ImageIcon("resources/undo.png"),
 				new ImageIcon("resources/redo.png"),
-				new ImageIcon("resources/preview.png"),
 				};
 		
 		JButton[] buttons = new JButton[buttonLabels.length];
@@ -37,6 +36,8 @@ public class ControlPanel extends JToolBar {
 			this.add(buttons[i]);
 			this.addSeparator();
 		}
+		
+		setFloatable(false);
 		
 	}
 
@@ -70,8 +71,6 @@ public class ControlPanel extends JToolBar {
 				controller.getCanvas().redo();
 				break;
 				
-			case "Preview":
-				break;
 			}
 		}
 	}

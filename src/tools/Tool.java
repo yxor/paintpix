@@ -7,7 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.*;
 
 
-public abstract class Tool extends MouseAdapter{
+public abstract class Tool extends MouseAdapter {
 	private Cursor cursor;
 	
 	public Tool()
