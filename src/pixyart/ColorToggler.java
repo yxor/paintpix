@@ -59,14 +59,13 @@ public class ColorToggler extends JToolBar implements ActionListener {
 		add(secondaryButtonContainer);
 		setFloatable(false);
 		defaultBackgroundColor = primaryButtonContainer.getBackground();
+		revalidate();
 	}
 	
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
-		
 	}
 
 	

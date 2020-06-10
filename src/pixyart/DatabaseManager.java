@@ -2,7 +2,6 @@ package pixyart;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -91,7 +90,6 @@ public class DatabaseManager {
         if(data == null)
             throw new IllegalArgumentException("data cannot be null");
 
-        
         String sql = "INSERT INTO recent(NAME, DATA) VALUES(?,?)";
         PreparedStatement pstmt = null;
         try {
@@ -151,7 +149,7 @@ public class DatabaseManager {
     {
     	if(conn == null) return null;
     	
-        String sql = "SELECT ID, NAME, RECENTDATE FROM RECENT ORDER BY datetime(RECENTDATE) DESC LIMIT 10;";
+        String sql = "SELECT ID, NAME, RECENTDATE FROM RECENT ORDER BY datetime(RECENTDATE) DESC LIMIT 15;";
         
         ArrayList<CanvasDatabaseObject> list = new ArrayList<CanvasDatabaseObject>();
         

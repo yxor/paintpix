@@ -101,7 +101,6 @@ public class MainMenuBar extends JMenuBar{
 					return;
 				
 				recentlyOpenedMenu.removeAll();
-				int counter = 0;
 				for(CanvasDatabaseObject o: l) {
 					JMenuItem item = new JMenuItem(String.format("%s\t%s", o.getName(), o.getDate()));
 					item.addActionListener(new AbstractAction() {
@@ -114,10 +113,7 @@ public class MainMenuBar extends JMenuBar{
 						}
 					});
 					recentlyOpenedMenu.add(item);
-					counter++;
-					if (counter > 10) {
-						break;
-					}
+
 				}
 				
 			}

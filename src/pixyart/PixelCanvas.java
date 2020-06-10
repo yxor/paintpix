@@ -292,6 +292,7 @@ public class PixelCanvas extends JComponent implements Serializable{
 		Color c = new Color(rgb, true);
 		
 		this.controller.getColorPicker().setColor(c);
+		this.controller.getColorToggler().setColor(c);
 		
 	}
 	
