@@ -18,7 +18,7 @@ public class MainFrame extends JFrame  {
 	private MainController controller;
 	
 	public MainFrame() {
-	    super("Pixy Art"); // temporary name
+	    super("PaintPix");
 
 
 	    Container mainPane = this.getContentPane();
@@ -74,6 +74,11 @@ public class MainFrame extends JFrame  {
         mainPane.add(colorPicker, BorderLayout.EAST); 
         mainPane.add(toolPanel, BorderLayout.WEST);
         mainPane.add(controlPanel, BorderLayout.NORTH);
+        
+        // setting the icon
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        setIconImage(tk.getImage("resources/logo.png"));
+        
 	    pack();
 	}
 
