@@ -26,7 +26,7 @@ You also need SQLITE for java, you can download the latest JAR from [here](https
 
 Just submitting a pull request.
 
-## Authors
+## Contributors
 
 * **[yxor](https://github.com/yxor)** - Initial work and idea.
 * **[maminetaieb](https://github.com/maminetaieb)** - Some work and ideas.
