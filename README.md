@@ -1,4 +1,4 @@
-# PainPix 
+# PaintPix 
 
 PaintPix is a desktop application to create pixel art built with swing.
  
@@ -24,7 +24,7 @@ You also need SQLITE for java, you can download the latest JAR from [here](https
 
 ## Contributing
 
-Just submitting a pull requests.
+Just submitting a pull request.
 
 ## Authors
 
