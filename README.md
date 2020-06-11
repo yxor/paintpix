@@ -1,53 +1,39 @@
-# PixyArt (name can be changed)
+# PainPix 
 
-Desktop application to create pixel art. 
+PaintPix is a desktop application to create pixel art built with swing.
+ 
+## Getting Started
 
-## Bugs
+Clone this repo and build it with (eclipse), or download the JAR from the releases.
 
-If you found a bug using the program please go to the issues tab and file it including the steps to reproduce the bug and the OS/distro you were using when the bug happened.
+### Prerequisites
+
+You need Java 1.8, you can see what java version you're running using this command.
+
+```
+java -version
+```
+
+You also need SQLITE for java, you can download the latest JAR from [here](https://bitbucket.org/xerial/sqlite-jdbc/downloads/).
 
 
-## TODO
+## Built With
+
+* [SQLITE](https://www.sqlitetutorial.net/sqlite-java/sqlite-jdbc-driver/)
+* Java Swing
+
+## Contributing
+
+Just submitting a pull requests.
+
+## Authors
+
+* **[yxor](https://github.com/yxor)** - Initial work and idea.
+* **[maminetaieb](https://github.com/maminetaieb)** - Some work and ideas.
+* **[PapaTato](https://github.com/PapaTato)** - General advice and design.
+* **Sy** - General advice.
 
 
--	~add Tool Bar~
+## License
 
--	~add different tools support~
-
--	~Color picker~
-
--	~State management~
-
--	~file saving~
-
--	~Add tool icons~
-
--	~Fix UndoManager~
-
--	~Add primaryColor and SecondaryColor pickers~
-
--	~Add new image dialog~
-
--	~Add save Image dialog with scaling and stuff~
-
--	~Fix layout and make it pretty and cute uwu~ kinda
-
--	~Menu bar and sub menus~
-
--	More Image formats support
-
--	Add key bindings and sub menus for **Everything**
-
--	Added a grid on the canvas with a way to show/hide it.
-
--	Add a Tool bar for tool control (control the size of a tool), should be specific to each tool and only show when the tool is currently being used.
-
--	Add custom cursor support for all the tools.
-
--	Add more tools depending on your ideas.
-
--	Add a status bar on the bottom of the main frame (show information in it).
-
--	Add JavaDocs comments and improve comments and code readability.
-
--	...
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
