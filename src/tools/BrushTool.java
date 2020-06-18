@@ -7,7 +7,7 @@ import java.util.HashSet;
 
 import javax.swing.ImageIcon;
 
-import pixyart.PixelCanvas;
+import paintpix.PixelCanvas;
 
 public class BrushTool extends Tool{
 	private HashSet<Point> visited;

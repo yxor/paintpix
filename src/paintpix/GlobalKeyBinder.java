@@ -1,4 +1,4 @@
-package pixyart;
+package paintpix;
 
 import java.awt.Event;
 import java.awt.event.*;

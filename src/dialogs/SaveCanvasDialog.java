@@ -1,4 +1,4 @@
-package pixyart;
+package dialogs;
 
 
 import java.awt.event.ActionEvent;
@@ -20,6 +20,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import managers.ImageFileManager;
+import paintpix.PixelCanvas;
 
 @SuppressWarnings("serial")
 public class SaveCanvasDialog extends JDialog {

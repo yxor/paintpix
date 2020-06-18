@@ -1,8 +1,11 @@
-package pixyart;
+package paintpix;
 
 
 import java.awt.event.*;
 import javax.swing.*;
+
+import managers.DatabaseManager;
+
 import java.awt.*;
 
 @SuppressWarnings("serial")

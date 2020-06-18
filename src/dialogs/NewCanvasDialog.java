@@ -1,4 +1,4 @@
-package pixyart;
+package dialogs;
 
 
 import java.awt.Color;
@@ -16,7 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import pixyart.ColorChooserButton.ColorChangedListener;
+import dialogs.ColorChooserButton.ColorChangedListener;
 
 @SuppressWarnings("serial")
 public class NewCanvasDialog extends JDialog {

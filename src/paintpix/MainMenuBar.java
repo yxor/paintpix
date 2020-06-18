@@ -1,4 +1,4 @@
-package pixyart;
+package paintpix;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -11,6 +11,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+
+import managers.CanvasDatabaseObject;
+import managers.DatabaseManager;
 
 @SuppressWarnings("serial")
 public class MainMenuBar extends JMenuBar{

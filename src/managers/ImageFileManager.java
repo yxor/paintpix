@@ -1,4 +1,4 @@
-package pixyart;
+package managers;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;

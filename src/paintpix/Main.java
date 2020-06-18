@@ -1,7 +1,9 @@
-package pixyart;
+package paintpix;
 
 import java.awt.*;
 import javax.swing.*;
+
+import managers.DatabaseManager;
 
 // entry point class
 public class Main {

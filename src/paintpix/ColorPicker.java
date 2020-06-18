@@ -1,4 +1,4 @@
-package pixyart;
+package paintpix;
 
 import java.awt.Color;
 
@@ -25,7 +25,7 @@ public class ColorPicker extends JColorChooser{
 		
 	}
 	
-	ColorPicker(Color initialColor){
+	public ColorPicker(Color initialColor){
 		super(initialColor);
 		this.setPreviewPanel(new JPanel());
 		

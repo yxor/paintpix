@@ -1,4 +1,4 @@
-package pixyart;
+package managers;
 
 import java.sql.*;
 import java.util.ArrayList;

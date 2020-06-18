@@ -1,4 +1,4 @@
-package pixyart;
+package paintpix;
 
 import java.awt.image.BufferedImage;
 import java.sql.DatabaseMetaData;
@@ -7,6 +7,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.xml.crypto.Data;
 
+import dialogs.NewCanvasDialog;
+import dialogs.SaveCanvasDialog;
+import managers.DatabaseManager;
+import managers.ImageFileManager;
 import tools.Tool;
 
 /**

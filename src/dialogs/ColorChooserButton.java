@@ -1,4 +1,5 @@
-package pixyart;
+package dialogs;
+
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -8,9 +9,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JColorChooser;
+import javax.swing.*;
+
 
 @SuppressWarnings("serial")
 public class ColorChooserButton extends JButton {
