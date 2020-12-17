@@ -1,10 +1,24 @@
-# PaintPix 
+<br />
+<p align="center">
+  <a href="#">
+    <img src=".github/logo.png" alt="Logo"  height="80">
+  </a>
 
-PaintPix is a desktop application to create pixel art built with swing.
- 
+  <h3 align="center">PaintPix</h3>
+
+  <p align="center">
+    Lightweight desktop application to draw pixel art built with Swing.
+    <br />
+  </p>
+</p>
+
+
+[![Product Name Screen Shot][product-screenshot]](#)
+
+
 ## Getting Started
 
-Clone this repo and build it with (eclipse), or download the JAR from the releases.
+Clone this repo and build it with eclipse, or download the JAR from the releases.
 
 ### Prerequisites
 
@@ -14,7 +28,7 @@ You need Java 1.8, you can see what java version you're running using this comma
 java -version
 ```
 
-You also need SQLITE for java, you can download the latest JAR from [here](https://bitbucket.org/xerial/sqlite-jdbc/downloads/).
+You will also need SQLITE for java, you can download the latest JAR from [here](https://bitbucket.org/xerial/sqlite-jdbc/downloads/).
 
 
 ## Built With
@@ -24,16 +38,18 @@ You also need SQLITE for java, you can download the latest JAR from [here](https
 
 ## Contributing
 
-Just submitting a pull request.
+Just submit a pull request.
 
 ## Contributors
 
-* **[yxor](https://github.com/yxor)** - Initial work and idea.
-* **[maminetaieb](https://github.com/maminetaieb)** - Some work and ideas.
-* **[PapaTato](https://github.com/PapaTato)** - General advice and design.
-* **Sy** - General advice.
+* **[yxor](https://github.com/yxor)** 
+* **[maminetaieb](https://github.com/maminetaieb)**
+* **[malekkselmi](https://github.com/malekkselmi)**
+* **[PapaTato](https://github.com/PapaTato)**
 
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+[product-screenshot]: .github/social.png
